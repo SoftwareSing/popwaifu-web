@@ -20,8 +20,9 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
-    // have an issue with svelte
-    // https://github.com/sveltejs/eslint-plugin-svelte3/issues/41
-    'no-multiple-empty-lines': 'off'
+    // these rules have issues with svelte
+    'no-multiple-empty-lines': 'off',
+    'prefer-const': 'off',
+    'import/first': 'off'
   }
 }
