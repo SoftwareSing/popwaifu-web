@@ -1,4 +1,10 @@
 import { writable } from 'svelte/store'
 
-export let imgNormalUrl = writable('https://i.imgur.com/yYmR0t5.png')
-export let imgPopUrl = writable('https://i.imgur.com/cmFYQri.png')
+export let waifuId = writable()
+export let name = writable()
+export let imgNormalUrl = writable('')
+export let imgPopUrl = writable('')
+export let imgInfo = writable()
+export let popAudioUrl = writable()
+export let popAudioInfo = writable()
+export let popCount = writable()
