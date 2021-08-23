@@ -1,13 +1,22 @@
 <script>
-	import { imgNormalUrl, imgPopUrl } from './Waifu.js'
+	import { imgNormalUrl, imgPopUrl, popAudioUrl } from './Waifu.js'
 
 	const NORMAL = 'normal'
 	const POP = 'pop'
 	let showing = NORMAL
 
+	const audioPlayer = new Audio()
+	$: audioPlayer.src = $popAudioUrl
+	function playPopAudio () {
+	  if (audioPlayer.readyState !== 4) return
+	  audioPlayer.currentTime = 0
+	  audioPlayer.play()
+	}
+
 	function handleInputDown () {
 	  if (showing === POP) return
 	  showing = POP
+	  playPopAudio()
 	}
 	function handleInputUp () {
 	  if (showing === NORMAL) return
