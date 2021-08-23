@@ -27,7 +27,7 @@
 	document.addEventListener('keyup', handleInputUp)
 </script>
 
-<div class="d-flex justify-content-center"
+<div class="d-flex justify-content-center pop"
 	on:mousedown={handleInputDown}
 	on:mouseup={handleInputUp}
 	on:touchstart={handleInputDown}
@@ -41,7 +41,12 @@
 </div>
 
 <style>
-	img {
+	.pop {
 		height: 100vh;
+		padding-top: 52px;
+	}
+
+	.pop img {
+		height: 100%;
 	}
 </style>
