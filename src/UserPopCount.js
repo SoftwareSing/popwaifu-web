@@ -16,6 +16,7 @@ function setUserPopCount (waifuId, userPopCount) {
 const waifuPopRecord = writable(0)
 let waifuId = ''
 currentWaifu.subscribe((waifu) => {
+  if (waifuId === waifu.waifuId) return
   waifuId = waifu.waifuId
   waifuPopRecord.set(getUserPopCount(waifuId))
 })
@@ -23,7 +24,7 @@ currentWaifu.subscribe((waifu) => {
 export const userPopCount = {
   subscribe: waifuPopRecord.subscribe,
   add: (addNum) => {
-    if (waifuId) return
+    if (!waifuId) return
     const oldCount = getUserPopCount(waifuId)
     const count = oldCount + addNum
     waifuPopRecord.set(count)

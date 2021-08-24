@@ -1,8 +1,9 @@
 <script>
   import { send } from './HttpSend'
-  import { buildWaifu, findWaifu } from './Waifu.js'
+  import { buildWaifu, findWaifu, reloadPopEvent } from './Waifu.js'
   import { currentWaifu } from './CurrentWaifu'
   import { formatNumber } from './helper'
+  import { reloadWaifuTime } from './config'
 
   /**
    * @typedef {import('./Waifu').WaifuWritable} WaifuWritable
@@ -14,7 +15,19 @@
   let waifuList = []
   let waifuDataList = []
   let waiufDataUnsubscribeList = []
-  $: {
+  $: championWaifuData = waifuDataList[0]
+  reloadPopEvent.subscribe(() => {
+    waifuDataList.sort((a, b) => {
+      return b.popCount - a.popCount
+    })
+    waifuDataList = waifuDataList
+  })
+
+  async function reloadWaifuList () {
+    const list = await send('GET', '/api/v1/waifu/list')
+    list.sort((a, b) => b.popCount - a.popCount)
+    waifuList = list.map(buildWaifu)
+
     waiufDataUnsubscribeList.forEach((unsubscribe) => unsubscribe())
     waiufDataUnsubscribeList = []
     waifuDataList = waifuList.map((waifuWritable) => {
@@ -23,13 +36,6 @@
       waiufDataUnsubscribeList.push(unsubscribe)
       return waifuData
     })
-  }
-  $: championWaifuData = waifuDataList[0]
-
-  async function reloadWaifuList () {
-    const list = await send('GET', '/api/v1/waifu/list')
-    list.sort((a, b) => b.popCount - a.popCount)
-    waifuList = list.map(buildWaifu)
 
     return list
   }
@@ -42,7 +48,7 @@
   async function init () {
     await reloadWaifuList()
     setShowingWaifu(championWaifuData.waifuId)
-    setInterval(reloadWaifuList, 15 * 1000)
+    setInterval(reloadWaifuList, reloadWaifuTime)
   }
   init()
 </script>
@@ -63,7 +69,7 @@
         </div>
       </button>
     </h2>
-    <div id="collapseWaifuList" class="accordion-collapse collapse" aria-labelledby="headingWaifuList" data-bs-parent="#accordionWaifuList">
+    <div id="collapseWaifuList" class="accordion-collapse collapse show" aria-labelledby="headingWaifuList" data-bs-parent="#accordionWaifuList">
       <div class="accordion-body">
         <div class="board">
           <div class="list-group list-group-flush">
@@ -74,7 +80,12 @@
                   <img class="" src="{waifu.imgNormalUrl}" alt="{waifu.name} image" />
                 </div>
                 <h5 class="flex-fill">{waifu.name}</h5>
-                <h5 class="">{formatNumber(waifu.popCount)}</h5>
+                <div class="d-flex flex-column me-2">
+                  <h5 class="text-end">{formatNumber(waifu.popCount)}</h5>
+                  {#if (waifu.pps > 1 || waifu.pps < -1)}
+                    <h5 class="text-end text-success">{formatNumber(waifu.pps)} pps</h5>
+                  {/if}
+                </div>
               </button>
             {/each}
           </div>

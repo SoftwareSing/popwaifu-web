@@ -7,8 +7,11 @@
   const POP = 'pop'
   let showing = NORMAL
 
+  const preloadImage = new Image()
+  $: if (preloadImage.src !== $currentWaifu.imgPopUrl) preloadImage.src = $currentWaifu.imgPopUrl
+
   const audioPlayer = new Audio()
-  $: audioPlayer.src = $currentWaifu.popAudioUrl
+  $: if (audioPlayer.src !== $currentWaifu.popAudioUrl) audioPlayer.src = $currentWaifu.popAudioUrl
   function playPopAudio () {
     if (audioPlayer.readyState !== 4) return
     audioPlayer.currentTime = 0
