@@ -1,6 +1,6 @@
 <script>
   import { waifuId, name, popCount, imgInfo, popAudioInfo } from './Waifu.js'
-  import { userPopCount } from './UserPopCount'
+  import { formatNumber } from './helper'
 </script>
 
 <div class="accordion" id="accordionWaifuInfo">
@@ -9,8 +9,8 @@
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWaifuInfo" aria-expanded="true" aria-controls="collapseWaifuInfo">
         <div class="d-flex justify-content-between w-100">
           <div class="px-3">{$name}</div>
-          <div class="">{$userPopCount}</div>
-          <div class="px-3">{$popCount}</div>
+          <div class=""></div>
+          <div class="px-3">{formatNumber($popCount)}</div>
         </div>
       </button>
     </h2>

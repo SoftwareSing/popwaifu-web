@@ -1,6 +1,7 @@
 <script>
   import { send } from './HttpSend'
   import { waifuId, name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount } from './Waifu.js'
+  import { formatNumber } from './helper'
 
   let waifuList = []
 
@@ -24,10 +25,6 @@
     popAudioUrl.set(waifu.popAudioUrl)
     popAudioInfo.set(waifu.popAudioInfo)
     popCount.set(waifu.popCount)
-  }
-
-  function formatNumber (num) {
-    return (new Intl.NumberFormat('en-US')).format(num)
   }
 
   async function init () {

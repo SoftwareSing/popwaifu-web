@@ -1,6 +1,7 @@
 <script>
   import { imgNormalUrl, imgPopUrl, popAudioUrl } from './Waifu.js'
   import { userPopCount } from './UserPopCount'
+  import { formatNumber } from './helper'
 
   const NORMAL = 'normal'
   const POP = 'pop'
@@ -35,6 +36,9 @@
   on:touchstart={handleInputDown}
   on:touchend={handleInputUp}
 >
+  <div class="pop-count-num">
+    {formatNumber($userPopCount)}
+  </div>
   {#if showing === NORMAL}
     <img src="{$imgNormalUrl}" alt="normal img" />
   {:else if showing === POP}
@@ -44,11 +48,25 @@
 
 <style>
   .pop {
+    position: relative;
     height: 100vh;
     padding-top: 52px;
   }
 
   .pop img {
     height: 100%;
+  }
+
+  .pop-count-num {
+    position: absolute;
+    font-size: 6rem;
+    font-weight: 900;
+    text-align: center;
+    color: #fff;
+    -webkit-text-stroke-width: 0.3rem;
+    -webkit-text-stroke-color: #000;
+    font-family: "Nunito";
+    word-break: break-word;
+    user-select: none;
   }
 </style>
