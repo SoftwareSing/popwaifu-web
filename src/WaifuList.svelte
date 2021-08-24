@@ -69,7 +69,7 @@
         </div>
       </button>
     </h2>
-    <div id="collapseWaifuList" class="accordion-collapse collapse show" aria-labelledby="headingWaifuList" data-bs-parent="#accordionWaifuList">
+    <div id="collapseWaifuList" class="accordion-collapse collapse" aria-labelledby="headingWaifuList" data-bs-parent="#accordionWaifuList">
       <div class="accordion-body">
         <div class="board">
           <div class="list-group list-group-flush">
