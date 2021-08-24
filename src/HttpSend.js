@@ -13,8 +13,9 @@ export async function send (method, path, data) {
     method,
     body: data !== undefined ? JSON.stringify(data) : undefined
   })
+  const text = await res.text()
 
-  return await res.json()
+  return text ? JSON.parse(text) : undefined
 }
 
 function isOnDev () {

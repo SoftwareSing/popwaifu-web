@@ -1,5 +1,6 @@
 <script>
 	import { imgNormalUrl, imgPopUrl, popAudioUrl } from './Waifu.js'
+	import { userPopCount } from './UserPopCount'
 
 	const NORMAL = 'normal'
 	const POP = 'pop'
@@ -17,6 +18,7 @@
 	  if (showing === POP) return
 	  showing = POP
 	  playPopAudio()
+	  userPopCount.add(1)
 	}
 	function handleInputUp () {
 	  if (showing === NORMAL) return
