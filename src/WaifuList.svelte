@@ -1,38 +1,19 @@
 <script>
+	import { send } from './HttpSend'
 	import { waifuId, name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount } from './Waifu.js'
 
-	let waifuList = [
-	  {
-	    waifuId: '6123c77494482e7f7ff19918',
-	    name: '十五號',
-	    imgNormalUrl: 'https://i.imgur.com/yYmR0t5.png',
-	    imgPopUrl: 'https://i.imgur.com/cmFYQri.png',
-	    imgInfo: 'picture from PopLeopardCat ( https://no15rescute.github.io/PopLeopardCat/ )',
-	    popAudioUrl: 'https://no15rescute.github.io/PopLeopardCat/A.mp3',
-	    popAudioInfo: 'audio from PopLeopardCat ( https://no15rescute.github.io/PopLeopardCat/ )',
-	    popCount: 0
-	  },
-	  {
-	    waifuId: '6123c77494482e7f7ff1991a',
-	    name: '杏仁ミル',
-	    imgNormalUrl: 'https://i.imgur.com/yWz4gP1.png',
-	    imgPopUrl: 'https://i.imgur.com/P5DjSxE.png',
-	    imgInfo: 'picture from 杏仁ミル twitter ( https://twitter.com/AnninMirudayo/status/1422580442876715008 ) ( https://twitter.com/AnninMirudayo/status/1421945176872742913 )',
-	    popAudioUrl: '',
-	    popAudioInfo: '',
-	    popCount: 0
-	  },
-	  {
-	    waifuId: '6123c77494482e7f7ff1991c',
-	    name: '初音ミク',
-	    imgNormalUrl: 'https://i.imgur.com/w50ILOk.jpg',
-	    imgPopUrl: 'https://i.imgur.com/8jOQjgL.jpg',
-	    imgInfo: 'picture from pixiv: 千夜QYS3 ( https://www.pixiv.net/artworks/56710319 )',
-	    popAudioUrl: '',
-	    popAudioInfo: '',
-	    popCount: 0
-	  }
-	]
+	let waifuList = []
+
+	async function reloadWaifuList () {
+	  const list = await send('GET', '/api/v1/waifu/list')
+
+	  const currentWaifuNewInfo = list.find((waifu) => waifu.waifuId === $waifuId)
+	  if (currentWaifuNewInfo) setShowingWaifu(currentWaifuNewInfo)
+
+	  list.sort((a, b) => b.popCount - a.popCount)
+	  waifuList = list
+	  return list
+	}
 
 	function setShowingWaifu (waifu) {
 	  waifuId.set(waifu.waifuId)
@@ -49,8 +30,10 @@
 	  return (new Intl.NumberFormat('en-US')).format(num)
 	}
 
-	function init () {
+	async function init () {
+	  await reloadWaifuList()
 	  setShowingWaifu(waifuList[0])
+	  setInterval(reloadWaifuList, 15 * 1000)
 	}
 	init()
 </script>
@@ -60,10 +43,14 @@
     <h2 class="accordion-header" id="headingWaifuList">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWaifuList" aria-expanded="true" aria-controls="collapseWaifuList">
 				<div class="d-flex align-items-center w-100 me-3">
-					<div class="me-2">#1</div>
-					<img class="header-img me-2" src="{waifuList[0].imgNormalUrl}" alt="{waifuList[0].name} image" />
-					<div class="flex-fill">{waifuList[0].name}</div>
-					<div>{formatNumber(waifuList[0].popCount)}</div>
+					{#if waifuList[0]}
+						<div class="me-2">#1</div>
+						<img class="header-img me-2" src="{waifuList[0].imgNormalUrl}" alt="{waifuList[0].name} image" />
+						<div class="flex-fill">{waifuList[0].name}</div>
+						<div>{formatNumber(waifuList[0].popCount)}</div>
+					{:else}
+						<div>loading</div>
+					{/if}
 				</div>
       </button>
     </h2>
