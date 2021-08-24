@@ -1,5 +1,5 @@
 <script>
-  import { imgNormalUrl, imgPopUrl, popAudioUrl } from './Waifu.js'
+  import { currentWaifu } from './CurrentWaifu'
   import { userPopCount } from './UserPopCount'
   import { formatNumber } from './helper'
 
@@ -8,7 +8,7 @@
   let showing = NORMAL
 
   const audioPlayer = new Audio()
-  $: audioPlayer.src = $popAudioUrl
+  $: audioPlayer.src = $currentWaifu.popAudioUrl
   function playPopAudio () {
     if (audioPlayer.readyState !== 4) return
     audioPlayer.currentTime = 0
@@ -40,9 +40,9 @@
     {formatNumber($userPopCount)}
   </div>
   {#if showing === NORMAL}
-    <img src="{$imgNormalUrl}" alt="normal img" />
+    <img src="{$currentWaifu.imgNormalUrl}" alt="normal img" />
   {:else if showing === POP}
-    <img src="{$imgPopUrl}" alt="pop img" />
+    <img src="{$currentWaifu.imgPopUrl}" alt="pop img" />
   {/if}
 </div>
 

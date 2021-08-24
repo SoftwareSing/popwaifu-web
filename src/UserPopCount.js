@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 import { getStorage, setStorage } from './Storage'
 import { addUnuploaded } from './PopUploader'
-import { waifuId as currentWaifuIdWriteable } from './Waifu'
+import { currentWaifu } from './CurrentWaifu'
 
 function waifuKey (waifuId) {
   return `waifu.${waifuId}.userpop.total`
@@ -15,14 +15,15 @@ function setUserPopCount (waifuId, userPopCount) {
 
 const waifuPopRecord = writable(0)
 let waifuId = ''
-currentWaifuIdWriteable.subscribe((value) => {
-  waifuId = value
+currentWaifu.subscribe((waifu) => {
+  waifuId = waifu.waifuId
   waifuPopRecord.set(getUserPopCount(waifuId))
 })
+
 export const userPopCount = {
   subscribe: waifuPopRecord.subscribe,
   add: (addNum) => {
-    if (!waifuId) return
+    if (waifuId) return
     const oldCount = getUserPopCount(waifuId)
     const count = oldCount + addNum
     waifuPopRecord.set(count)

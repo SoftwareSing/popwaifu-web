@@ -1,8 +1,8 @@
 import { send } from './HttpSend'
 import { getStorage, setStorage } from './Storage'
+import { uploadPopLimit, intervalUploadPopTime } from './config'
 
 const unuploadedKey = 'unuploadedPopMap'
-const popLimit = 500
 
 function getMap () {
   return getStorage(unuploadedKey) || {}
@@ -23,13 +23,13 @@ function uploadPop () {
   const waifuPopObj = {}
   let total = 0
   for (const [waifuId, popCount] of Object.entries(map)) {
-    if (total + popCount < popLimit) {
+    if (total + popCount < uploadPopLimit) {
       total += popCount
       waifuPopObj[waifuId] = popCount
     } else {
-      const uploadCount = popLimit - total
+      const uploadCount = uploadPopLimit - total
       waifuPopObj[waifuId] = uploadCount
-      total = popLimit
+      total = uploadPopLimit
       break
     }
   }
@@ -46,6 +46,6 @@ function uploadPop () {
 
 async function intervalUploadPop () {
   await uploadPop()
-  setTimeout(intervalUploadPop, 15500)
+  setTimeout(intervalUploadPop, intervalUploadPopTime)
 }
 setTimeout(intervalUploadPop, 5000)

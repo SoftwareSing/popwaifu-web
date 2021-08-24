@@ -1,35 +1,47 @@
 <script>
   import { send } from './HttpSend'
-  import { waifuId, name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount } from './Waifu.js'
+  import { buildWaifu, findWaifu } from './Waifu.js'
+  import { currentWaifu } from './CurrentWaifu'
   import { formatNumber } from './helper'
 
+  /**
+   * @typedef {import('./Waifu').WaifuWritable} WaifuWritable
+   */
+
+  /**
+   * @type {Array<WaifuWritable>}
+   */
   let waifuList = []
+  let waifuDataList = []
+  let waiufDataUnsubscribeList = []
+  $: {
+    waiufDataUnsubscribeList.forEach((unsubscribe) => unsubscribe())
+    waiufDataUnsubscribeList = []
+    waifuDataList = waifuList.map((waifuWritable) => {
+      const waifuData = {}
+      const unsubscribe = waifuWritable.subscribe((waifu) => Object.assign(waifuData, waifu))
+      waiufDataUnsubscribeList.push(unsubscribe)
+      return waifuData
+    })
+  }
+  $: championWaifuData = waifuDataList[0]
 
   async function reloadWaifuList () {
     const list = await send('GET', '/api/v1/waifu/list')
-
-    const currentWaifuNewInfo = list.find((waifu) => waifu.waifuId === $waifuId)
-    if (currentWaifuNewInfo) setShowingWaifu(currentWaifuNewInfo)
-
     list.sort((a, b) => b.popCount - a.popCount)
-    waifuList = list
+    waifuList = list.map(buildWaifu)
+
     return list
   }
 
-  function setShowingWaifu (waifu) {
-    waifuId.set(waifu.waifuId)
-    name.set(waifu.name)
-    imgNormalUrl.set(waifu.imgNormalUrl)
-    imgPopUrl.set(waifu.imgPopUrl)
-    imgInfo.set(waifu.imgInfo)
-    popAudioUrl.set(waifu.popAudioUrl)
-    popAudioInfo.set(waifu.popAudioInfo)
-    popCount.set(waifu.popCount)
+  function setShowingWaifu (waifuId) {
+    const waifu = findWaifu(waifuId)
+    currentWaifu.change(waifu)
   }
 
   async function init () {
     await reloadWaifuList()
-    setShowingWaifu(waifuList[0])
+    setShowingWaifu(championWaifuData.waifuId)
     setInterval(reloadWaifuList, 15 * 1000)
   }
   init()
@@ -40,11 +52,11 @@
     <h2 class="accordion-header" id="headingWaifuList">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWaifuList" aria-expanded="true" aria-controls="collapseWaifuList">
         <div class="d-flex align-items-center w-100 me-3">
-          {#if waifuList[0]}
+          {#if championWaifuData}
             <div class="me-2">#1</div>
-            <img class="header-img me-2" src="{waifuList[0].imgNormalUrl}" alt="{waifuList[0].name} image" />
-            <div class="flex-fill">{waifuList[0].name}</div>
-            <div>{formatNumber(waifuList[0].popCount)}</div>
+            <img class="header-img me-2" src="{championWaifuData.imgNormalUrl}" alt="{championWaifuData.name} image" />
+            <div class="flex-fill">{championWaifuData.name}</div>
+            <div>{formatNumber(championWaifuData.popCount)}</div>
           {:else}
             <div>loading</div>
           {/if}
@@ -55,8 +67,8 @@
       <div class="accordion-body">
         <div class="board">
           <div class="list-group list-group-flush">
-            {#each waifuList as waifu, i}
-              <button class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={() => setShowingWaifu(waifu)}>
+            {#each waifuDataList as waifu, i}
+              <button class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={() => setShowingWaifu(waifu.waifuId)}>
                 <h3 class="ranking me-2">{i + 1}</h3>
                 <div class="flex-shrink-0 me-2">
                   <img class="" src="{waifu.imgNormalUrl}" alt="{waifu.name} image" />
