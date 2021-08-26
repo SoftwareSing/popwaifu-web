@@ -1,8 +1,8 @@
 import { writable } from 'svelte/store'
 import { Waifu } from './Waifu'
 
-const current = writable(new Waifu({}))
-let unsubscribe = writable().subscribe(() => {})
+const current = writable(new Waifu())
+let unsubscribe = () => {}
 
 export const currentWaifu = {
   subscribe: current.subscribe,

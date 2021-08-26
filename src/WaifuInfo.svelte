@@ -20,9 +20,9 @@
         <div>{$currentWaifu.name}</div>
         <hr />
         <div>picture info: {$currentWaifu.imgInfo}</div>
-        {#if $currentWaifu.popAudioInfo}
+        {#if $currentWaifu.audioInfo}
           <hr />
-          <div>audio info: {$currentWaifu.popAudioInfo}</div>
+          <div>audio info: {$currentWaifu.audioInfo}</div>
         {/if}
       </div>
     </div>

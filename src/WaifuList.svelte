@@ -32,7 +32,7 @@
     waiufDataUnsubscribeList = []
     waifuDataList = waifuList.map((waifuWritable) => {
       const waifuData = {}
-      const unsubscribe = waifuWritable.subscribe((waifu) => Object.assign(waifuData, waifu))
+      const unsubscribe = waifuWritable.subscribe((waifu) => waifu.assignDisplayObject(waifuData))
       waiufDataUnsubscribeList.push(unsubscribe)
       return waifuData
     })

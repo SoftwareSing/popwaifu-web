@@ -10,12 +10,19 @@
   const preloadImage = new Image()
   $: if (preloadImage.src !== $currentWaifu.imgPopUrl) preloadImage.src = $currentWaifu.imgPopUrl
 
-  const audioPlayer = new Audio()
-  $: if (audioPlayer.src !== $currentWaifu.popAudioUrl) audioPlayer.src = $currentWaifu.popAudioUrl
+  const popAudioPlayer = new Audio()
+  const normalAudioPlayer = new Audio()
+  $: if (popAudioPlayer.src !== $currentWaifu.audioPopUrl) popAudioPlayer.src = $currentWaifu.audioPopUrl
+  $: if (normalAudioPlayer.src !== $currentWaifu.audioNormalUrl) normalAudioPlayer.src = $currentWaifu.audioNormalUrl
   function playPopAudio () {
-    if (audioPlayer.readyState !== 4) return
-    audioPlayer.currentTime = 0
-    audioPlayer.play()
+    if (popAudioPlayer.readyState !== 4) return
+    popAudioPlayer.currentTime = 0
+    popAudioPlayer.play()
+  }
+  function playNormalAudio () {
+    if (normalAudioPlayer.readyState !== 4) return
+    normalAudioPlayer.currentTime = 0
+    normalAudioPlayer.play()
   }
 
   function handleInputDown () {
@@ -27,6 +34,7 @@
   function handleInputUp () {
     if (showing === NORMAL) return
     showing = NORMAL
+    playNormalAudio()
   }
 
   document.addEventListener('keydown', handleInputDown)

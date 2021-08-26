@@ -2,38 +2,64 @@ import { writable } from 'svelte/store'
 import { reloadWaifuTime } from './config'
 
 const reloadPopCountTime = 60
+const defaultModeName = 'default'
 
 /**
  * @typedef {import('svelte/store').Writable<Waifu>} WaifuWritable
  */
+/**
+ * @typedef {Object} ModeConfig
+ * @property {String} modeName
+ * @property {String} imgNormalUrl
+ * @property {String} imgPopUrl
+ * @property {String} [imgInfo]
+ * @property {String} [audioNormalUrl]
+ * @property {String} [audioPopUrl]
+ * @property {String} [audioInfo]
+ */
+/**
+ * @typedef {Object} WaifuData
+ * @property {String} waifuId
+ * @property {String} name
+ * @property {Number} popCount
+ * @property {Array<ModeConfig>} modeConfigList
+ */
 
 export class Waifu {
-  constructor ({ waifuId, name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount }) {
+  /**
+   * @param {WaifuData} waifuData
+   */
+  constructor ({ waifuId, name, popCount, modeConfigList } = forLoadingWaifuData) {
     this.waifuId = waifuId
     this.name = name
-    this.imgNormalUrl = imgNormalUrl
-    this.imgPopUrl = imgPopUrl
-    this.imgInfo = imgInfo
-    this.popAudioUrl = popAudioUrl
-    this.popAudioInfo = popAudioInfo
+
     this.popCount = popCount
     this.newPopCount = popCount
     this.pps = 0
+
+    this.modeConfigMap = new Map(modeConfigList.map((modeConfig) => [modeConfig.modeName, modeConfig]))
+    this.modeName = defaultModeName
   }
 
-  update ({ name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount }) {
+  /**
+   * @param {Object} waifuData
+   * @param {String} waifuData.name
+   * @param {Number} waifuData.popCount
+   * @param {Array<ModeConfig>} waifuData.modeConfigList
+   */
+  update ({ name, popCount, modeConfigList }) {
     this.name = name
-    this.imgNormalUrl = imgNormalUrl
-    this.imgPopUrl = imgPopUrl
-    this.imgInfo = imgInfo
-    this.popAudioUrl = popAudioUrl
-    this.popAudioInfo = popAudioInfo
 
     this.newPopCount = popCount
     this.pps = (this.newPopCount - this.popCount) / (reloadWaifuTime / 1000)
     this.reloadAddNum = Math.ceil(
       (this.newPopCount - this.popCount) / ((reloadWaifuTime + 500) / reloadPopCountTime)
     )
+
+    this.modeConfigMap = new Map(modeConfigList.map((modeConfig) => [modeConfig.modeName, modeConfig]))
+    if (!this.modeConfigMap.has(this.modeName)) {
+      this.modeName = defaultModeName
+    }
   }
 
   reloadPopCount () {
@@ -43,6 +69,54 @@ export class Waifu {
     if (this.popCount < this.newPopCount && reloadCount > this.newPopCount) this.popCount = this.newPopCount
     else if (this.popCount > this.newPopCount && reloadCount < this.newPopCount) this.popCount = this.newPopCount
     else this.popCount = reloadCount
+  }
+
+  changeMode (modeName) {
+    if (!this.modeConfigMap.has(modeName)) return
+    this.modeName = modeName
+  }
+
+  assignDisplayObject (target = {}) {
+    target.waifuId = this.waifuId
+    target.name = this.name
+    target.popCount = this.popCount
+    target.pps = this.pps
+    target.modeName = this.modeName
+    target.imgNormalUrl = this.imgNormalUrl
+    target.imgPopUrl = this.imgPopUrl
+    target.imgInfo = this.imgInfo
+    target.audioNormalUrl = this.audioNormalUrl
+    target.audioPopUrl = this.audioPopUrl
+    target.audioInfo = this.audioInfo
+    return target
+  }
+
+  get currentModeConfig () {
+    return this.modeConfigMap.get(this.modeName)
+  }
+
+  get imgNormalUrl () {
+    return this.currentModeConfig.imgNormalUrl
+  }
+
+  get imgPopUrl () {
+    return this.currentModeConfig.imgPopUrl
+  }
+
+  get imgInfo () {
+    return this.currentModeConfig.imgInfo
+  }
+
+  get audioNormalUrl () {
+    return this.currentModeConfig.audioNormalUrl
+  }
+
+  get audioPopUrl () {
+    return this.currentModeConfig.audioPopUrl
+  }
+
+  get audioInfo () {
+    return this.currentModeConfig.audioInfo
   }
 }
 
@@ -62,22 +136,29 @@ setInterval(() => {
   reloadPopEvent.set(Date.now())
 }, reloadPopCountTime)
 
-export function buildWaifu ({ waifuId, name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount }) {
-  if (waifuMap.has(waifuId)) {
-    return updateWaifu(waifuId, { name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount })
+/**
+ * @param {WaifuData} waifuData
+ */
+export function buildWaifu (waifuData) {
+  if (waifuMap.has(waifuData.waifuId)) {
+    return updateWaifu(waifuData.waifuId, waifuData)
   }
 
-  const waifu = new Waifu({ waifuId, name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount })
+  const waifu = new Waifu(waifuData)
   const waifuWritable = writable(waifu)
-  waifuMap.set(waifuId, waifuWritable)
+  waifuMap.set(waifu.waifuId, waifuWritable)
 
   return waifuWritable
 }
 
-export function updateWaifu (waifuId, { name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount }) {
+/**
+ * @param {String} waifuId
+ * @param {WaifuData} waifuData
+ */
+export function updateWaifu (waifuId, waifuData) {
   const waifuWritable = waifuMap.get(waifuId)
   waifuWritable.update((waifu) => {
-    waifu.update({ name, imgNormalUrl, imgPopUrl, imgInfo, popAudioUrl, popAudioInfo, popCount })
+    waifu.update(waifuData)
     return waifu
   })
   return waifuWritable
@@ -85,4 +166,21 @@ export function updateWaifu (waifuId, { name, imgNormalUrl, imgPopUrl, imgInfo, 
 
 export function findWaifu (waifuId) {
   return waifuMap.get(waifuId)
+}
+
+const forLoadingWaifuData = {
+  waifuId: 'loadingId',
+  name: 'loading',
+  popCount: 0,
+  modeConfigList: [
+    {
+      modeName: 'default',
+      imgNormalUrl: '',
+      imgPopUrl: '',
+      imgInfo: '',
+      audioNormalUrl: '',
+      audioPopUrl: '',
+      audioInfo: ''
+    }
+  ]
 }
