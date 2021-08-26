@@ -45,6 +45,11 @@
     currentWaifu.change(waifu)
   }
 
+  function clickWaifu (waifuId) {
+    setShowingWaifu(waifuId)
+    document.getElementById('headingWaifuListButton').click()
+  }
+
   async function init () {
     await reloadWaifuList()
     setShowingWaifu(championWaifuData.waifuId)
@@ -56,7 +61,7 @@
 <div class="accordion" id="accordionWaifuList">
   <div class="accordion-item">
     <h2 class="accordion-header" id="headingWaifuList">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWaifuList" aria-expanded="true" aria-controls="collapseWaifuList">
+      <button id="headingWaifuListButton" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWaifuList" aria-expanded="true" aria-controls="collapseWaifuList">
         <div class="d-flex align-items-center w-100 me-3">
           {#if championWaifuData}
             <div class="me-2">#1</div>
@@ -74,7 +79,7 @@
         <div class="board">
           <div class="list-group list-group-flush">
             {#each waifuDataList as waifu, i}
-              <button class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={() => setShowingWaifu(waifu.waifuId)}>
+              <button class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={clickWaifu(waifu.waifuId)}>
                 <h3 class="ranking me-2">{i + 1}</h3>
                 <div class="flex-shrink-0 me-2">
                   <img class="" src="{waifu.imgNormalUrl}" alt="{waifu.name} image" />
