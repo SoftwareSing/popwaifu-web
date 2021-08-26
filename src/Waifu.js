@@ -37,7 +37,7 @@ export class Waifu {
     this.newPopCount = popCount
     this.pps = 0
 
-    this.modeConfigMap = new Map(modeConfigList.map((modeConfig) => [modeConfig.modeName, modeConfig]))
+    this.modeConfigMap = transModeConfigListToMap(modeConfigList)
     this.modeName = defaultModeName
   }
 
@@ -56,10 +56,12 @@ export class Waifu {
       (this.newPopCount - this.popCount) / ((reloadWaifuTime + 500) / reloadPopCountTime)
     )
 
-    this.modeConfigMap = new Map(modeConfigList.map((modeConfig) => [modeConfig.modeName, modeConfig]))
+    this.modeConfigMap = transModeConfigListToMap(modeConfigList)
     if (!this.modeConfigMap.has(this.modeName)) {
       this.modeName = defaultModeName
     }
+
+    return this
   }
 
   reloadPopCount () {
@@ -69,11 +71,15 @@ export class Waifu {
     if (this.popCount < this.newPopCount && reloadCount > this.newPopCount) this.popCount = this.newPopCount
     else if (this.popCount > this.newPopCount && reloadCount < this.newPopCount) this.popCount = this.newPopCount
     else this.popCount = reloadCount
+
+    return this
   }
 
   changeMode (modeName) {
     if (!this.modeConfigMap.has(modeName)) return
     this.modeName = modeName
+
+    return this
   }
 
   assignDisplayObject (target = {}) {
@@ -118,6 +124,24 @@ export class Waifu {
   get audioInfo () {
     return this.currentModeConfig.audioInfo
   }
+}
+
+function formatUrl (url) {
+  if (!url) return `${window.location.origin}/`
+  return /^\//.test(url) ? `${window.location.origin}${url}` : url
+}
+
+/**
+ * @param {Array<ModeConfig>} modeConfigList
+ */
+function transModeConfigListToMap (modeConfigList) {
+  for (const modeConfig of modeConfigList) {
+    modeConfig.imgNormalUrl = formatUrl(modeConfig.imgNormalUrl)
+    modeConfig.imgPopUrl = formatUrl(modeConfig.imgPopUrl)
+    modeConfig.audioNormalUrl = formatUrl(modeConfig.audioNormalUrl)
+    modeConfig.audioPopUrl = formatUrl(modeConfig.audioPopUrl)
+  }
+  return new Map(modeConfigList.map((modeConfig) => [modeConfig.modeName, modeConfig]))
 }
 
 /**
