@@ -1,12 +1,12 @@
 <script>
-  import { send } from './HttpSend'
-  import { buildWaifu, findWaifu, reloadPopEvent } from './Waifu.js'
-  import { currentWaifu } from './CurrentWaifu'
-  import { formatNumber } from './helper'
+  import { send } from './utils/HttpSend'
+  import { buildWaifu, findWaifu, reloadPopEvent } from './waifu/Waifu.js'
+  import { currentWaifu } from './waifu/CurrentWaifu'
+  import { formatNumber } from './utils/formatter'
   import { reloadWaifuTime } from './config'
 
   /**
-   * @typedef {import('./Waifu').WaifuWritable} WaifuWritable
+   * @typedef {import('./waifu/Waifu').WaifuWritable} WaifuWritable
    */
 
   /**

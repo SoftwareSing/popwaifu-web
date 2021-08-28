@@ -1,6 +1,6 @@
-import { send } from './HttpSend'
-import { getStorage, setStorage } from './Storage'
-import { uploadPopLimit, intervalUploadPopTime } from './config'
+import { send } from '../utils/HttpSend'
+import { getStorage, setStorage } from '../utils/Storage'
+import { uploadPopLimit, intervalUploadPopTime } from '../config'
 
 const unuploadedKey = 'unuploadedPopMap'
 

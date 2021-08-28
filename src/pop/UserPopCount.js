@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
-import { getStorage, setStorage } from './Storage'
+import { getStorage, setStorage } from '../utils/Storage'
 import { addUnuploaded } from './PopUploader'
-import { currentWaifu } from './CurrentWaifu'
+import { currentWaifu } from '../waifu/CurrentWaifu'
 
 function waifuKey (waifuId) {
   return `waifu.${waifuId}.userpop.total`

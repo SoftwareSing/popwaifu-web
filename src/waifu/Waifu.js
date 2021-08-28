@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store'
-import { reloadWaifuTime } from './config'
+import { reloadWaifuTime } from '../config'
 
 const reloadPopCountTime = 60
 const defaultModeName = 'default'

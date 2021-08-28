@@ -1,6 +1,6 @@
 <script>
-  import { currentWaifu } from './CurrentWaifu'
-  import { formatNumber } from './helper'
+  import { currentWaifu } from './waifu/CurrentWaifu'
+  import { formatNumber } from './utils/formatter'
 
   function changeWaifuMode (modeName) {
     currentWaifu.update((waifu) => waifu.changeMode(modeName))

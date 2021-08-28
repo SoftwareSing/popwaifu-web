@@ -1,7 +1,7 @@
 <script>
-  import { currentWaifu } from './CurrentWaifu'
-  import { userPopCount } from './UserPopCount'
-  import { formatNumber } from './helper'
+  import { currentWaifu } from './waifu/CurrentWaifu'
+  import { userPopCount } from './pop/UserPopCount'
+  import { formatNumber } from './utils/formatter'
 
   const NORMAL = 'normal'
   const POP = 'pop'
