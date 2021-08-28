@@ -4,24 +4,16 @@ import { Waifu } from './Waifu'
 const current = writable(new Waifu())
 let unsubscribe = () => {}
 
-let originWaifuWritable = writable()
-
 export const currentWaifu = {
   subscribe: current.subscribe,
+  update: current.update,
   /**
-   * @param {import('svelte/store').Writable<Waifu>} waifuWritable
+   * @param {Waifu} waifu
    */
-  change: function (waifuWritable) {
+  change: function (waifu) {
     unsubscribe()
-    originWaifuWritable = waifuWritable
-    unsubscribe = waifuWritable.subscribe((waifu) => {
+    unsubscribe = waifu.subscribe((waifu) => {
       current.set(waifu)
     })
-  },
-  /**
-   * @param {import('svelte/store').Updater<Waifu>} updater
-   */
-  update: function (updater) {
-    return originWaifuWritable.update(updater)
   }
 }

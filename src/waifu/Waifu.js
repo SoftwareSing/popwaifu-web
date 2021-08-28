@@ -5,9 +5,6 @@ const reloadPopCountTime = 60
 const defaultModeName = 'default'
 
 /**
- * @typedef {import('svelte/store').Writable<Waifu>} WaifuWritable
- */
-/**
  * @typedef {Object} ModeConfig
  * @property {String} modeName
  * @property {String} imgNormalUrl
@@ -30,6 +27,9 @@ export class Waifu {
    * @param {WaifuData} waifuData
    */
   constructor ({ waifuId, name, popCount, modeConfigList } = forLoadingWaifuData) {
+    this.writable = writable(this)
+    this.subscribe = this.writable.subscribe
+
     this.waifuId = waifuId
     this.name = name
 
@@ -61,6 +61,7 @@ export class Waifu {
       this.modeName = defaultModeName
     }
 
+    this.writable.set(this)
     return this
   }
 
@@ -72,6 +73,7 @@ export class Waifu {
     else if (this.popCount > this.newPopCount && reloadCount < this.newPopCount) this.popCount = this.newPopCount
     else this.popCount = reloadCount
 
+    this.writable.set(this)
     return this
   }
 
@@ -79,6 +81,7 @@ export class Waifu {
     if (!this.modeConfigMap.has(modeName)) return
     this.modeName = modeName
 
+    this.writable.set(this)
     return this
   }
 
@@ -145,17 +148,14 @@ function transModeConfigListToMap (modeConfigList) {
 }
 
 /**
- * @type {Map<String, WaifuWritable}
+ * @type {Map<String, Waifu}
  */
 const waifuMap = new Map()
 
 export const reloadPopEvent = writable(Date.now())
 setInterval(() => {
-  for (const waifuWritable of waifuMap.values()) {
-    waifuWritable.update((waifu) => {
-      waifu.reloadPopCount()
-      return waifu
-    })
+  for (const waifu of waifuMap.values()) {
+    waifu.reloadPopCount()
   }
   reloadPopEvent.set(Date.now())
 }, reloadPopCountTime)
@@ -169,10 +169,9 @@ export function buildWaifu (waifuData) {
   }
 
   const waifu = new Waifu(waifuData)
-  const waifuWritable = writable(waifu)
-  waifuMap.set(waifu.waifuId, waifuWritable)
+  waifuMap.set(waifu.waifuId, waifu)
 
-  return waifuWritable
+  return waifu
 }
 
 /**
@@ -180,12 +179,9 @@ export function buildWaifu (waifuData) {
  * @param {WaifuData} waifuData
  */
 export function updateWaifu (waifuId, waifuData) {
-  const waifuWritable = waifuMap.get(waifuId)
-  waifuWritable.update((waifu) => {
-    waifu.update(waifuData)
-    return waifu
-  })
-  return waifuWritable
+  const waifu = waifuMap.get(waifuId)
+  waifu.update(waifuData)
+  return waifu
 }
 
 export function findWaifu (waifuId) {

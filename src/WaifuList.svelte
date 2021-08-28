@@ -6,11 +6,11 @@
   import { reloadWaifuTime } from './config'
 
   /**
-   * @typedef {import('./waifu/Waifu').WaifuWritable} WaifuWritable
+   * @typedef {import('./waifu/Waifu').Waifu} Waifu
    */
 
   /**
-   * @type {Array<WaifuWritable>}
+   * @type {Array<Waifu>}
    */
   let waifuList = []
   let waifuDataList = []
@@ -30,9 +30,9 @@
 
     waiufDataUnsubscribeList.forEach((unsubscribe) => unsubscribe())
     waiufDataUnsubscribeList = []
-    waifuDataList = waifuList.map((waifuWritable) => {
+    waifuDataList = waifuList.map((waifu) => {
       const waifuData = {}
-      const unsubscribe = waifuWritable.subscribe((waifu) => waifu.assignDisplayObject(waifuData))
+      const unsubscribe = waifu.subscribe((waifu) => waifu.assignDisplayObject(waifuData))
       waiufDataUnsubscribeList.push(unsubscribe)
       return waifuData
     })
