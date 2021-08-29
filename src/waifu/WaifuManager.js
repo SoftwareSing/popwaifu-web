@@ -10,7 +10,11 @@ import { reloadWaifuTime, reloadPopCountTime } from '../config'
 /**
  * @type {Map<String, Waifu}
  */
-const waifuMap = new Map()
+const waifuIdMap = new Map()
+/**
+ * @type {Map<String, Waifu>}
+ */
+const waifuUrlIdMap = new Map()
 export const syncServerWaifuEvent = writable(Date.now())
 export const reloadPopEvent = writable(Date.now())
 
@@ -24,7 +28,7 @@ export async function initWaifuManager () {
 }
 
 function reloadEveryPopCount () {
-  for (const waifu of waifuMap.values()) {
+  for (const waifu of waifuIdMap.values()) {
     waifu.reloadPopCount()
   }
   reloadPopEvent.set(Date.now())
@@ -45,12 +49,13 @@ async function syncServerWaifuList () {
   * @param {WaifuData} waifuData
   */
 export function buildWaifu (waifuData) {
-  if (waifuMap.has(waifuData.waifuId)) {
+  if (waifuIdMap.has(waifuData.waifuId)) {
     return updateWaifu(waifuData.waifuId, waifuData)
   }
 
   const waifu = new Waifu(waifuData)
-  waifuMap.set(waifu.waifuId, waifu)
+  waifuIdMap.set(waifu.waifuId, waifu)
+  waifuUrlIdMap.set(waifu.urlId, waifu)
 
   return waifu
 }
@@ -60,15 +65,19 @@ export function buildWaifu (waifuData) {
   * @param {WaifuData} waifuData
   */
 export function updateWaifu (waifuId, waifuData) {
-  const waifu = waifuMap.get(waifuId)
+  const waifu = waifuIdMap.get(waifuId)
   waifu.update(waifuData)
   return waifu
 }
 
-export function findWaifu (waifuId) {
-  return waifuMap.get(waifuId)
+export function findWaifuById (waifuId) {
+  return waifuIdMap.get(waifuId)
+}
+
+export function findWaifuByUrlId (urlId) {
+  return waifuUrlIdMap.get(urlId)
 }
 
 export function getWaifuList () {
-  return [...waifuMap.values()]
+  return [...waifuIdMap.values()]
 }

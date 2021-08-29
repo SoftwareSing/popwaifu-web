@@ -1,5 +1,5 @@
 <script>
-  import { findWaifu, getWaifuList, reloadPopEvent, syncServerWaifuEvent } from './waifu/WaifuManager'
+  import { findWaifuById, getWaifuList, reloadPopEvent, syncServerWaifuEvent } from './waifu/WaifuManager'
   import { currentWaifu } from './waifu/CurrentWaifu'
   import { formatNumber } from './utils/formatter'
 
@@ -29,7 +29,7 @@
   }
 
   function setShowingWaifu (waifuId) {
-    const waifu = findWaifu(waifuId)
+    const waifu = findWaifuById(waifuId)
     currentWaifu.change(waifu)
   }
 

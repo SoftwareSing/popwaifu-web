@@ -13,6 +13,7 @@ import { reloadWaifuTime, reloadPopCountTime, defaultModeName } from '../config'
 /**
  * @typedef {Object} WaifuData
  * @property {String} waifuId
+ * @property {String} urlId
  * @property {String} name
  * @property {Number} popCount
  * @property {Array<ModeConfig>} modeConfigList
@@ -22,11 +23,12 @@ export class Waifu {
   /**
    * @param {WaifuData} waifuData
    */
-  constructor ({ waifuId, name, popCount, modeConfigList } = forLoadingWaifuData) {
+  constructor ({ waifuId, urlId, name, popCount, modeConfigList } = forLoadingWaifuData) {
     this.writable = writable(this)
     this.subscribe = this.writable.subscribe
 
     this.waifuId = waifuId
+    this.urlId = urlId
     this.name = name
 
     this.popCount = popCount
