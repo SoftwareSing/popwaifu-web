@@ -1,4 +1,5 @@
 <script>
+  import { onDestroy } from 'svelte'
   import { Link } from 'svelte-routing'
   import { getWaifuList, reloadPopEvent, syncServerWaifuEvent } from './waifu/WaifuManager'
   import { formatNumber } from './utils/formatter'
@@ -7,11 +8,17 @@
   let waiufDataUnsubscribeList = []
   $: championWaifuData = waifuDataList[0]
   reloadPopEvent.subscribe(() => {
+    waifuDataList = waifuDataList
+  })
+
+  const intervalId = setInterval(sortWaifuDataList, 1000)
+  onDestroy(() => clearInterval(intervalId))
+  function sortWaifuDataList () {
     waifuDataList.sort((a, b) => {
       return b.popCount - a.popCount
     })
     waifuDataList = waifuDataList
-  })
+  }
 
   $: reloadWaifuList($syncServerWaifuEvent)
   async function reloadWaifuList () {
