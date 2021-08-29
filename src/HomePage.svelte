@@ -19,6 +19,13 @@
   })
 </script>
 
+{#if waifuList.length < 1}
+  <div class="position-relative vh-100 vw-100">
+    <div class="position-absolute top-50 start-50 translate-middle">
+      loading...
+    </div>
+  </div>
+{/if}
 <div class="container">
   <div class="d-flex align-content-center flex-wrap">
     {#each waifuList as waifu }
