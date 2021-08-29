@@ -1,22 +1,22 @@
 <script>
   import { onDestroy } from 'svelte'
   import { Link } from 'svelte-routing'
+  import { currentWaifu } from './waifu/CurrentWaifu'
   import { getWaifuList, reloadPopEvent, syncServerWaifuEvent } from './waifu/WaifuManager'
   import { formatNumber } from './utils/formatter'
 
   let waifuDataList = []
   let waiufDataUnsubscribeList = []
   $: championWaifuData = waifuDataList[0]
-  reloadPopEvent.subscribe(() => {
-    waifuDataList = waifuDataList
-  })
+
+  $: showList = filterWaifuShowList(waifuDataList)
+  reloadPopEvent.subscribe(() => { showList = showList })
 
   const intervalId = setInterval(sortWaifuDataList, 1000)
   onDestroy(() => clearInterval(intervalId))
   function sortWaifuDataList () {
-    waifuDataList.sort((a, b) => {
-      return b.popCount - a.popCount
-    })
+    waifuDataList.sort((a, b) => b.popCount - a.popCount)
+    waifuDataList.forEach((waifuData, i) => { waifuData.ranking = i + 1 })
     waifuDataList = waifuDataList
   }
 
@@ -27,12 +27,22 @@
 
     waiufDataUnsubscribeList.forEach((unsubscribe) => unsubscribe())
     waiufDataUnsubscribeList = []
-    waifuDataList = waifuList.map((waifu) => {
-      const waifuData = {}
+    waifuDataList = waifuList.map((waifu, i) => {
+      const waifuData = { ranking: i + 1 }
       const unsubscribe = waifu.subscribe((waifu) => waifu.assignDisplayObject(waifuData))
       waiufDataUnsubscribeList.push(unsubscribe)
       return waifuData
     })
+  }
+
+  function filterWaifuShowList (list = []) {
+    const showList = list.slice(0, 30)
+    const currentWaifuId = currentWaifu.get().waifuId
+    const currentData = list.find((waifuData) => waifuData.waifuId === currentWaifuId)
+    if (currentData && !showList.find((waifuData) => waifuData === currentData)) {
+      showList.push(currentData)
+    }
+    return showList
   }
 
   function clickWaifu () {
@@ -60,10 +70,10 @@
       <div class="accordion-body">
         <div class="board">
           <div class="list-group list-group-flush">
-            {#each waifuDataList as waifu, i}
+            {#each showList as waifu}
               <Link to="/{waifu.urlId}" style="text-decoration: none;">
                 <div class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={clickWaifu(waifu.waifuId)}>
-                  <h3 class="ranking me-2">{i + 1}</h3>
+                  <h3 class="ranking me-2">{waifu.ranking}</h3>
                   <div class="flex-shrink-0 me-2">
                     <img class="" src="{waifu.imgNormalUrl}" alt="{waifu.name} image" />
                   </div>
