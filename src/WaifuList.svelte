@@ -1,6 +1,6 @@
 <script>
-  import { findWaifuById, getWaifuList, reloadPopEvent, syncServerWaifuEvent } from './waifu/WaifuManager'
-  import { currentWaifu } from './waifu/CurrentWaifu'
+  import { Link } from 'svelte-routing'
+  import { getWaifuList, reloadPopEvent, syncServerWaifuEvent } from './waifu/WaifuManager'
   import { formatNumber } from './utils/formatter'
 
   let waifuDataList = []
@@ -28,13 +28,7 @@
     })
   }
 
-  function setShowingWaifu (waifuId) {
-    const waifu = findWaifuById(waifuId)
-    currentWaifu.change(waifu)
-  }
-
-  function clickWaifu (waifuId) {
-    setShowingWaifu(waifuId)
+  function clickWaifu () {
     document.getElementById('headingWaifuListButton').click()
   }
 </script>
@@ -60,19 +54,21 @@
         <div class="board">
           <div class="list-group list-group-flush">
             {#each waifuDataList as waifu, i}
-              <button class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={clickWaifu(waifu.waifuId)}>
-                <h3 class="ranking me-2">{i + 1}</h3>
-                <div class="flex-shrink-0 me-2">
-                  <img class="" src="{waifu.imgNormalUrl}" alt="{waifu.name} image" />
+              <Link to="/{waifu.urlId}" style="text-decoration: none;">
+                <div class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={clickWaifu(waifu.waifuId)}>
+                  <h3 class="ranking me-2">{i + 1}</h3>
+                  <div class="flex-shrink-0 me-2">
+                    <img class="" src="{waifu.imgNormalUrl}" alt="{waifu.name} image" />
+                  </div>
+                  <h5 class="flex-fill">{waifu.name}</h5>
+                  <div class="d-flex flex-column me-2">
+                    <h5 class="text-end">{formatNumber(waifu.popCount)}</h5>
+                    {#if (waifu.pps > 1 || waifu.pps < -1)}
+                      <h5 class="text-end text-success">{formatNumber(waifu.pps)} pps</h5>
+                    {/if}
+                  </div>
                 </div>
-                <h5 class="flex-fill">{waifu.name}</h5>
-                <div class="d-flex flex-column me-2">
-                  <h5 class="text-end">{formatNumber(waifu.popCount)}</h5>
-                  {#if (waifu.pps > 1 || waifu.pps < -1)}
-                    <h5 class="text-end text-success">{formatNumber(waifu.pps)} pps</h5>
-                  {/if}
-                </div>
-              </button>
+              </Link>
             {/each}
           </div>
         </div>
@@ -96,6 +92,7 @@
 
   .waifu-info {
     padding: 10px 0px;
+    border: 0px;
   }
 
   .waifu-info img {

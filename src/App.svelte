@@ -1,33 +1,19 @@
 <script>
-  import Pop from './Pop.svelte'
-  import WaifuInfo from './WaifuInfo.svelte'
-  import WaifuList from './WaifuList.svelte'
+  import { Router, Route } from 'svelte-routing'
+  import WaifuPopPage from './WaifuPopPage.svelte'
+
+  export let url = ''
 </script>
 
-<div class="app">
-  <div class="fixed-top">
-    <WaifuInfo />
+<Router url="{url}">
+  <div class="app">
+    <Route path="/:urlId" component="{WaifuPopPage}" />
+    <Route path="/" component="{WaifuPopPage}" />
   </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <Pop />
-      </div>
-    </div>
-  </div>
-
-  <div class="fixed-bottom">
-    <div class="container-lg">
-      <WaifuList />
-    </div>
-  </div>
-</div>
+</Router>
 
 <style>
   .app {
     position: relative;
-    height: 100vh;
-    overflow: hidden;
   }
 </style>

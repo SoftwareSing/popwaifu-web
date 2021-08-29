@@ -85,6 +85,7 @@ export class Waifu {
 
   assignDisplayObject (target = {}) {
     target.waifuId = this.waifuId
+    target.urlId = this.urlId
     target.name = this.name
     target.popCount = this.popCount
     target.pps = this.pps

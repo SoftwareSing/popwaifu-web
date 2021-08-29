@@ -1,7 +1,6 @@
 import { writable } from 'svelte/store'
 import { send } from '../utils/HttpSend'
 import { Waifu } from './Waifu'
-import { currentWaifu } from './CurrentWaifu'
 import { reloadWaifuTime, reloadPopCountTime } from '../config'
 /**
  * @typedef {import('./Waifu').WaifuData} WaifuData
@@ -19,9 +18,7 @@ export const syncServerWaifuEvent = writable(Date.now())
 export const reloadPopEvent = writable(Date.now())
 
 export async function initWaifuManager () {
-  const waifuList = await syncServerWaifuList()
-  waifuList.sort((a, b) => b.popCount - a.popCount)
-  currentWaifu.change(waifuList[0])
+  await syncServerWaifuList()
 
   setInterval(syncServerWaifuList, reloadWaifuTime)
   setInterval(reloadEveryPopCount, reloadPopCountTime)

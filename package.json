@@ -9,10 +9,11 @@
     "lint": "eslint .",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear --host 0.0.0.0"
+    "start": "sirv public --single --no-clear --host 0.0.0.0"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "svelte-routing": "^1.6.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
