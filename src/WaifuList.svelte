@@ -1,18 +1,8 @@
 <script>
-  import { send } from './utils/HttpSend'
-  import { buildWaifu, findWaifu, reloadPopEvent } from './waifu/Waifu.js'
+  import { findWaifu, getWaifuList, reloadPopEvent, syncServerWaifuEvent } from './waifu/WaifuManager'
   import { currentWaifu } from './waifu/CurrentWaifu'
   import { formatNumber } from './utils/formatter'
-  import { reloadWaifuTime } from './config'
 
-  /**
-   * @typedef {import('./waifu/Waifu').Waifu} Waifu
-   */
-
-  /**
-   * @type {Array<Waifu>}
-   */
-  let waifuList = []
   let waifuDataList = []
   let waiufDataUnsubscribeList = []
   $: championWaifuData = waifuDataList[0]
@@ -23,10 +13,10 @@
     waifuDataList = waifuDataList
   })
 
+  $: reloadWaifuList($syncServerWaifuEvent)
   async function reloadWaifuList () {
-    const list = await send('GET', '/api/v1/waifu/list')
-    list.sort((a, b) => b.popCount - a.popCount)
-    waifuList = list.map(buildWaifu)
+    const waifuList = getWaifuList()
+    waifuList.sort((a, b) => b.popCount - a.popCount)
 
     waiufDataUnsubscribeList.forEach((unsubscribe) => unsubscribe())
     waiufDataUnsubscribeList = []
@@ -36,8 +26,6 @@
       waiufDataUnsubscribeList.push(unsubscribe)
       return waifuData
     })
-
-    return list
   }
 
   function setShowingWaifu (waifuId) {
@@ -49,13 +37,6 @@
     setShowingWaifu(waifuId)
     document.getElementById('headingWaifuListButton').click()
   }
-
-  async function init () {
-    await reloadWaifuList()
-    setShowingWaifu(championWaifuData.waifuId)
-    setInterval(reloadWaifuList, reloadWaifuTime)
-  }
-  init()
 </script>
 
 <div class="accordion" id="accordionWaifuList">

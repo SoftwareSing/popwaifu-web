@@ -1,9 +1,5 @@
 import { writable } from 'svelte/store'
-import { reloadWaifuTime } from '../config'
-
-const reloadPopCountTime = 60
-const defaultModeName = 'default'
-
+import { reloadWaifuTime, reloadPopCountTime, defaultModeName } from '../config'
 /**
  * @typedef {Object} ModeConfig
  * @property {String} modeName
@@ -145,47 +141,6 @@ function transModeConfigListToMap (modeConfigList) {
     modeConfig.audioPopUrl = formatUrl(modeConfig.audioPopUrl)
   }
   return new Map(modeConfigList.map((modeConfig) => [modeConfig.modeName, modeConfig]))
-}
-
-/**
- * @type {Map<String, Waifu}
- */
-const waifuMap = new Map()
-
-export const reloadPopEvent = writable(Date.now())
-setInterval(() => {
-  for (const waifu of waifuMap.values()) {
-    waifu.reloadPopCount()
-  }
-  reloadPopEvent.set(Date.now())
-}, reloadPopCountTime)
-
-/**
- * @param {WaifuData} waifuData
- */
-export function buildWaifu (waifuData) {
-  if (waifuMap.has(waifuData.waifuId)) {
-    return updateWaifu(waifuData.waifuId, waifuData)
-  }
-
-  const waifu = new Waifu(waifuData)
-  waifuMap.set(waifu.waifuId, waifu)
-
-  return waifu
-}
-
-/**
- * @param {String} waifuId
- * @param {WaifuData} waifuData
- */
-export function updateWaifu (waifuId, waifuData) {
-  const waifu = waifuMap.get(waifuId)
-  waifu.update(waifuData)
-  return waifu
-}
-
-export function findWaifu (waifuId) {
-  return waifuMap.get(waifuId)
 }
 
 const forLoadingWaifuData = {
