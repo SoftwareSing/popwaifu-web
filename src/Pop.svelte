@@ -50,6 +50,7 @@
   <div class="pop-count-num">
     {formatNumber($userPopCount)}
   </div>
+  <div class="top-div"></div>
   {#if showing === NORMAL}
     <img src="{$currentWaifu.imgNormalUrl}" alt="normal img" />
   {:else if showing === POP}
@@ -79,5 +80,11 @@
     font-family: "Nunito";
     word-break: break-word;
     user-select: none;
+  }
+
+  .top-div {
+    position: absolute;
+    width: 100vw;
+    height: 100%;
   }
 </style>
