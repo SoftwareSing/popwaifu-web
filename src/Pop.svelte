@@ -26,15 +26,19 @@
     normalAudioPlayer.play()
   }
 
-  function handleInputDown () {
+  function handleInputDown (event) {
     if (showing === POP) return
     showing = POP
+    event.preventDefault()
+
     playPopAudio()
     userPopCount.add(1)
   }
-  function handleInputUp () {
+  function handleInputUp (event) {
     if (showing === NORMAL) return
     showing = NORMAL
+    event.preventDefault()
+
     playNormalAudio()
   }
 
