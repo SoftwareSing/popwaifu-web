@@ -1,4 +1,5 @@
 <script>
+  import { onDestroy } from 'svelte'
   import { currentWaifu } from './waifu/CurrentWaifu'
   import { userPopCount } from './pop/UserPopCount'
   import { formatNumber } from './utils/formatter'
@@ -39,6 +40,11 @@
 
   document.addEventListener('keydown', handleInputDown)
   document.addEventListener('keyup', handleInputUp)
+
+  onDestroy(function () {
+    document.removeEventListener('keydown', handleInputDown)
+    document.removeEventListener('keyup', handleInputUp)
+  })
 </script>
 
 <div class="d-flex justify-content-center pop"
