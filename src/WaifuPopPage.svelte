@@ -7,10 +7,15 @@
   import { findWaifuByUrlId, syncServerWaifuEvent } from './waifu/WaifuManager'
 
   export let urlId = ''
+  export let mode
   $: if (urlId) {
     const waifu = findWaifuByUrlId(urlId)
-    if (waifu) currentWaifu.change(findWaifuByUrlId(urlId))
-    else changeCurrentAfterSync()
+    if (waifu) {
+      waifu.changeMode(mode)
+      currentWaifu.change(waifu)
+    } else {
+      changeCurrentAfterSync()
+    }
   }
 
   let unsubscribeSyncEvent
@@ -22,6 +27,7 @@
       const waifu = findWaifuByUrlId(urlId)
       if (!waifu) return
 
+      if (mode) waifu.changeMode(mode)
       currentWaifu.change(waifu)
       unsubscribeSyncEvent()
       unsubscribeSyncEvent = undefined

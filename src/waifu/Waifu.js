@@ -76,9 +76,10 @@ export class Waifu {
   }
 
   changeMode (modeName) {
-    if (!this.modeConfigMap.has(modeName)) return
-    this.modeName = modeName
+    if (!this.modeConfigMap.has(modeName)) modeName = defaultModeName
+    if (this.modeName === modeName) return
 
+    this.modeName = modeName
     this.writable.set(this)
     return this
   }
@@ -86,6 +87,7 @@ export class Waifu {
   assignDisplayObject (target = {}) {
     target.waifuId = this.waifuId
     target.urlId = this.urlId
+    target.url = this.url
     target.name = this.name
     target.popCount = this.popCount
     target.pps = this.pps
@@ -97,6 +99,19 @@ export class Waifu {
     target.audioPopUrl = this.audioPopUrl
     target.audioInfo = this.audioInfo
     return target
+  }
+
+  get url () {
+    return this.modeName === defaultModeName
+      ? `/${this.urlId}`
+      : `/${this.urlId}/${this.modeName}`
+  }
+
+  get modeUrlList () {
+    return [...this.modeConfigMap.keys()].map((mode) => {
+      const url = mode === defaultModeName ? `/${this.urlId}` : `/${this.urlId}/${mode}`
+      return [mode, url]
+    })
   }
 
   get currentModeConfig () {

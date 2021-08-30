@@ -1,13 +1,9 @@
 <script>
+  import { Link } from 'svelte-routing'
   import { currentWaifu } from './waifu/CurrentWaifu'
   import { formatNumber } from './utils/formatter'
 
-  function changeWaifuMode (modeName) {
-    currentWaifu.update((waifu) => waifu.changeMode(modeName))
-  }
-
-  function clickMode (modeName) {
-    changeWaifuMode(modeName)
+  function clickMode () {
     document.getElementById('headingWaifuInfoButton').click()
   }
 </script>
@@ -29,10 +25,10 @@
         <div>{$currentWaifu.name}</div>
         {#if $currentWaifu.modeConfigMap.size > 1}
           <div class="d-flex mt-3">
-            {#each [...$currentWaifu.modeConfigMap.keys()] as modeName}
-              <button class="btn btn-outline-primary me-3" on:click={clickMode(modeName)}>
+            {#each $currentWaifu.modeUrlList as [modeName, url]}
+              <Link class="btn btn-outline-primary me-3" to="{url}" on:click={clickMode}>
                 {modeName}
-              </button>
+              </Link>
             {/each}
           </div>
         {/if}

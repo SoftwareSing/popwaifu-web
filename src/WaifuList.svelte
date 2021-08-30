@@ -71,7 +71,7 @@
         <div class="board">
           <div class="list-group list-group-flush">
             {#each showList as waifu}
-              <Link to="/{waifu.urlId}" style="text-decoration: none;">
+              <Link to="{waifu.url}" style="text-decoration: none;">
                 <div class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={clickWaifu(waifu.waifuId)}>
                   <h3 class="ranking me-2">{waifu.ranking}</h3>
                   <div class="flex-shrink-0 me-2">
