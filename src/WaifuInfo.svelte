@@ -33,10 +33,10 @@
           </div>
         {/if}
         <hr />
-        <div>picture info: {$currentWaifu.imgInfo}</div>
+        <div>picture: {$currentWaifu.imgInfo}</div>
         {#if $currentWaifu.audioInfo}
           <hr />
-          <div>audio info: {$currentWaifu.audioInfo}</div>
+          <div>audio: {$currentWaifu.audioInfo}</div>
         {/if}
       </div>
     </div>
