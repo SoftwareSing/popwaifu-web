@@ -1,6 +1,6 @@
 import { send } from '../utils/HttpSend'
 import { getStorage, setStorage } from '../utils/Storage'
-import { uploadPopLimit, intervalUploadPopTime } from '../config'
+import { uploadPopLimit, intervalUploadPopTime, exampleWaifuData } from '../config'
 
 const unuploadedKey = 'unuploadedPopMap'
 
@@ -12,6 +12,8 @@ function setMap (map) {
 }
 
 export function addUnuploaded (waifuId, addNum) {
+  if (waifuId === exampleWaifuData.waifuId) return
+
   const map = getMap()
   if (!Number.isSafeInteger(map[waifuId]) || map[waifuId] < 0) map[waifuId] = 0
   map[waifuId] += addNum

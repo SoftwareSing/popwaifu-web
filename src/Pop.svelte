@@ -26,18 +26,16 @@
     normalAudioPlayer.play()
   }
 
-  function handleInputDown (event) {
+  function handleInputDown () {
     if (showing === POP) return
     showing = POP
-    event.preventDefault()
 
     playPopAudio()
     userPopCount.add(1)
   }
-  function handleInputUp (event) {
+  function handleInputUp () {
     if (showing === NORMAL) return
     showing = NORMAL
-    event.preventDefault()
 
     playNormalAudio()
   }
@@ -54,8 +52,14 @@
 <div class="d-flex justify-content-center pop"
   on:mousedown={handleInputDown}
   on:mouseup={handleInputUp}
-  on:touchstart={handleInputDown}
-  on:touchend={handleInputUp}
+  on:touchstart={(event) => {
+    handleInputDown()
+    event.preventDefault()
+  }}
+  on:touchend={(event) => {
+    handleInputUp()
+    event.preventDefault()
+  }}
 >
   <div class="pop-count-num">
     {formatNumber($userPopCount)}
@@ -94,7 +98,7 @@
 
   .top-div {
     position: absolute;
-    width: 100vw;
-    height: 100%;
+    width: 100%;
+    height: 100vh;
   }
 </style>
