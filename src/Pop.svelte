@@ -1,5 +1,4 @@
 <script>
-  import { onDestroy } from 'svelte'
   import { currentWaifu } from './waifu/CurrentWaifu'
   import { userPopCount } from './pop/UserPopCount'
   import { formatNumber } from './utils/formatter'
@@ -39,16 +38,9 @@
 
     playNormalAudio()
   }
-
-  document.addEventListener('keydown', handleInputDown)
-  document.addEventListener('keyup', handleInputUp)
-
-  onDestroy(function () {
-    document.removeEventListener('keydown', handleInputDown)
-    document.removeEventListener('keyup', handleInputUp)
-  })
 </script>
 
+<svelte:window on:keydown={handleInputDown} on:keyup={handleInputUp} />
 <div class="d-flex justify-content-center pop"
   on:mousedown={handleInputDown}
   on:mouseup={handleInputUp}
