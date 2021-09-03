@@ -1,5 +1,6 @@
 <script>
   import { onDestroy } from 'svelte'
+  import PageHead from './PageHead.svelte'
   import Pop from './Pop.svelte'
   import WaifuInfo from './WaifuInfo.svelte'
   import WaifuList from './WaifuList.svelte'
@@ -39,6 +40,7 @@
   })
 </script>
 
+<PageHead title={$currentWaifu.name} description={`Click ${$currentWaifu.name}`} />
 
 <div class="pop-page">
   <div class="fixed-top">

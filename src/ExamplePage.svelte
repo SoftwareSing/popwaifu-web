@@ -1,4 +1,5 @@
 <script>
+  import PageHead from './PageHead.svelte'
   import Pop from './Pop.svelte'
   import UploadComponent from './UploadComponent.svelte'
   import { currentWaifu } from './waifu/CurrentWaifu'
@@ -54,6 +55,7 @@
   }
 </script>
 
+<PageHead title="example" />
 
 <div>
   <div class="container">

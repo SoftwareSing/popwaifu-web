@@ -1,6 +1,7 @@
 <script>
   import { onDestroy } from 'svelte'
   import { Link } from 'svelte-routing'
+  import PageHead from './PageHead.svelte'
   import { getWaifuList, syncServerWaifuEvent } from './waifu/WaifuManager'
   import { formatNumber } from './utils/formatter'
 
@@ -18,6 +19,8 @@
     unsubscribeSyncEvent()
   })
 </script>
+
+<PageHead />
 
 {#if waifuList.length < 1}
   <div class="position-relative vh-100 vw-100">
