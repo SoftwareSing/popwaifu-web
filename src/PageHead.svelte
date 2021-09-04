@@ -1,6 +1,7 @@
 <script>
   export let title = ''
   export let description = ''
+  export let image = ''
 
   const websiteName = 'pop waifu'
   $: headTitle = title ? `${title} - ${websiteName}` : websiteName
@@ -15,6 +16,16 @@
   <meta name="description" content="{headDescription}" />
   <meta property="og:description" content="{headDescription}" />
   <meta property="twitter:description" content="{headDescription}" />
+
+  {#if image}
+    <meta property="twitter:card" content="summary" />
+    <meta property="og:image" content="{image}" />
+    <meta property="twitter:image" content="{image}" />
+
+    <link rel="icon" href="{image}" />
+  {:else}
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  {/if}
 </svelte:head>
 
 <style>

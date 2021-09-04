@@ -40,7 +40,7 @@
   })
 </script>
 
-<PageHead title={$currentWaifu.name} description={`Click ${$currentWaifu.name}`} />
+<PageHead title={$currentWaifu.name} description={`Click ${$currentWaifu.name}`} image={$currentWaifu.imgIconUrl} />
 
 <div class="pop-page">
   <div class="fixed-top">

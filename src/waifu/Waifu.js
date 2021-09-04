@@ -5,6 +5,7 @@ import { reloadWaifuTime, reloadPopCountTime, defaultModeName } from '../config'
  * @property {String} modeName
  * @property {String} imgNormalUrl
  * @property {String} imgPopUrl
+ * @property {String} [imgIconUrl]
  * @property {String} [imgInfo]
  * @property {String} [audioNormalUrl]
  * @property {String} [audioPopUrl]
@@ -94,6 +95,7 @@ export class Waifu {
     target.modeName = this.modeName
     target.imgNormalUrl = this.imgNormalUrl
     target.imgPopUrl = this.imgPopUrl
+    target.imgIconUrl = this.imgIconUrl
     target.imgInfo = this.imgInfo
     target.audioNormalUrl = this.audioNormalUrl
     target.audioPopUrl = this.audioPopUrl
@@ -126,6 +128,10 @@ export class Waifu {
     return this.currentModeConfig.imgPopUrl
   }
 
+  get imgIconUrl () {
+    return this.currentModeConfig.imgIconUrl
+  }
+
   get imgInfo () {
     return this.currentModeConfig.imgInfo
   }
@@ -155,6 +161,7 @@ function transModeConfigListToMap (modeConfigList) {
   for (const modeConfig of modeConfigList) {
     modeConfig.imgNormalUrl = formatUrl(modeConfig.imgNormalUrl)
     modeConfig.imgPopUrl = formatUrl(modeConfig.imgPopUrl)
+    modeConfig.imgIconUrl = modeConfig.imgIconUrl ? formatUrl(modeConfig.imgIconUrl) : ''
     modeConfig.audioNormalUrl = formatUrl(modeConfig.audioNormalUrl)
     modeConfig.audioPopUrl = formatUrl(modeConfig.audioPopUrl)
   }
@@ -170,6 +177,7 @@ const forLoadingWaifuData = {
       modeName: 'default',
       imgNormalUrl: '',
       imgPopUrl: '',
+      imgIconUrl: '',
       imgInfo: '',
       audioNormalUrl: '',
       audioPopUrl: '',
