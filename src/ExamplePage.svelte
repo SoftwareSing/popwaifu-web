@@ -17,10 +17,10 @@ import { i18n } from './i18n/i18n'
 
   function update ({ imgNormalUrl, imgPopUrl, audioNormalUrl, audioPopUrl }) {
     const modeConfig = { ...example.currentModeConfig }
-    if (imgNormalUrl) modeConfig.imgNormalUrl = imgNormalUrl
-    if (imgPopUrl) modeConfig.imgPopUrl = imgPopUrl
-    if (audioNormalUrl) modeConfig.audioNormalUrl = audioNormalUrl
-    if (audioPopUrl) modeConfig.audioPopUrl = audioPopUrl
+    if (typeof imgNormalUrl === 'string') modeConfig.imgNormalUrl = imgNormalUrl
+    if (typeof imgPopUrl === 'string') modeConfig.imgPopUrl = imgPopUrl
+    if (typeof audioNormalUrl === 'string') modeConfig.audioNormalUrl = audioNormalUrl
+    if (typeof audioPopUrl === 'string') modeConfig.audioPopUrl = audioPopUrl
 
     example.update({
       name: example.name,

@@ -9,12 +9,12 @@
   export let initUrl = ''
 
   let url = ''
-  $: if (url) changeCallback(url)
+  $: changeCallback(url)
 
   if (initUrl) url = initUrl
 
   let fileSrc = ''
-  $: if (fileSrc) changeCallback(fileSrc)
+  $: changeCallback(fileSrc)
   async function changeInputFile (files) {
     const file = files[0]
     if (!file || !(new RegExp(`^${fileType}`)).test(file.type)) return
@@ -30,7 +30,7 @@
   }
 
   let clipboardFileSrc = ''
-  $: if (clipboardFileSrc) changeCallback(clipboardFileSrc)
+  $: changeCallback(clipboardFileSrc)
   async function getFromClipboard () {
     const items = await navigator.clipboard.read()
     const fileItem = getFileItem(items)
@@ -59,15 +59,15 @@
   function onChangeInputMethod (method) {
     switch (method) {
       case URL_INPUT: {
-        if (url) changeCallback(url)
+        changeCallback(url)
         break
       }
       case FILE_INPUT: {
-        if (fileSrc) changeCallback(fileSrc)
+        changeCallback(fileSrc)
         break
       }
       case CLIPBOARD_INPUT: {
-        if (clipboardFileSrc) changeCallback(clipboardFileSrc)
+        changeCallback(clipboardFileSrc)
         break
       }
     }
