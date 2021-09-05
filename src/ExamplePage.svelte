@@ -5,6 +5,7 @@
   import { currentWaifu } from './waifu/CurrentWaifu'
   import { buildWaifu } from './waifu/WaifuManager'
   import { exampleWaifuData } from './config'
+import { i18n } from './i18n/i18n'
 
   const example = buildWaifu(exampleWaifuData)
   currentWaifu.change(example)
@@ -96,11 +97,11 @@
         <hr />
 
         <div class="d-flex">
-          <button class="flex-fill btn btn-primary" on:click={copyLink}>copy preview link</button>
+          <button class="flex-fill btn btn-primary" on:click={copyLink}>{i18n.copyPreviewLink()}</button>
         </div>
         <div class="row">
           <div class="col-lg-7 col-12">
-            <h5 class="mt-3">*only <div class="text-danger d-inline-block">URL</div> can share with link</h5>
+            <h5 class="mt-3">{i18n.onlyUrlCanShareWithLink()}</h5>
           </div>
           <div class="col-lg-5 col-12">
             <img class="w-100 mt-1" src="https://i.imgur.com/Ko9H6Pf.png" alt="NOTE img" />

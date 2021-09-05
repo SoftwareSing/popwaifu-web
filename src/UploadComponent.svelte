@@ -1,4 +1,6 @@
 <script>
+  import { i18n } from './i18n/i18n'
+
   /**
    * @type {'image' | 'audio'}
   */
@@ -74,13 +76,13 @@
 
 <select class="form-select mb-3" bind:value={inputMethod}>
   <option value="{URL_INPUT}">URL</option>
-  <option value="{FILE_INPUT}">File</option>
-  <option value="{CLIPBOARD_INPUT}">Clipboard ( Copy & Post )</option>
+  <option value="{FILE_INPUT}">{i18n.file()}</option>
+  <option value="{CLIPBOARD_INPUT}">{i18n.clipboard()}</option>
 </select>
 
 {#if inputMethod === URL_INPUT}
   <div class="input-group">
-    <input class="form-control" type="text" placeholder="post {fileType} URL" bind:value="{url}" />
+    <input class="form-control" type="text" placeholder="{i18n.postFileTypeUrl({ fileType })}" bind:value="{url}" />
   </div>
 {:else if inputMethod === FILE_INPUT}
   <div class="input-group">
@@ -89,7 +91,7 @@
 {:else if inputMethod === CLIPBOARD_INPUT}
   <div class="d-flex">
     <button class="flex-fill btn btn-secondary" on:click="{getFromClipboard}">
-      click to post {fileType} file
+      {i18n.clickToPostFile({ fileType })}
     </button>
   </div>
 {/if}
