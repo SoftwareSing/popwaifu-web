@@ -96,6 +96,14 @@
                 {i18n.showAllWaifu()}
               </div>
             </Link>
+            <a href="https://forms.gle/GxiN5Don369tm6196" target="_blank" style="text-decoration: none;">
+              <div class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus-lg me-3" viewBox="0 0 16 16">
+                  <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+                </svg>
+                {i18n.helpUsAddMoreWaifu()}
+              </div>
+            </a>
           </div>
         </div>
       </div>
