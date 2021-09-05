@@ -1,6 +1,7 @@
 <script>
   import { Link } from 'svelte-routing'
   import { currentWaifu } from './waifu/CurrentWaifu'
+  import { i18n } from './i18n/i18n'
   import { formatNumber } from './utils/formatter'
 
   function clickMode () {
@@ -33,10 +34,10 @@
           </div>
         {/if}
         <hr />
-        <div>picture: {$currentWaifu.imgInfo}</div>
+        <div>{i18n.picture()}: {$currentWaifu.imgInfo}</div>
         {#if $currentWaifu.audioInfo}
           <hr />
-          <div>audio: {$currentWaifu.audioInfo}</div>
+          <div>{i18n.audio()}: {$currentWaifu.audioInfo}</div>
         {/if}
       </div>
     </div>

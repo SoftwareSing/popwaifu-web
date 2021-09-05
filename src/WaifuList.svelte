@@ -3,6 +3,7 @@
   import { Link } from 'svelte-routing'
   import { currentWaifu } from './waifu/CurrentWaifu'
   import { getWaifuList, reloadPopEvent, syncServerWaifuEvent } from './waifu/WaifuManager'
+  import { i18n } from './i18n/i18n'
   import { formatNumber } from './utils/formatter'
 
   let waifuDataList = []
@@ -92,7 +93,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-arrow-left me-3" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
                 </svg>
-                show all waifu
+                {i18n.showAllWaifu()}
               </div>
             </Link>
           </div>
