@@ -1,4 +1,5 @@
 <script>
+  import { Howl } from 'howler'
   import { currentWaifu } from './waifu/CurrentWaifu'
   import { userPopCount } from './pop/UserPopCount'
   import { formatNumber } from './utils/formatter'
@@ -10,18 +11,18 @@
   const preloadImage = new Image()
   $: if (preloadImage.src !== $currentWaifu.imgPopUrl) preloadImage.src = $currentWaifu.imgPopUrl
 
-  const popAudioPlayer = new Audio()
-  const normalAudioPlayer = new Audio()
-  $: if (popAudioPlayer.src !== $currentWaifu.audioPopUrl) popAudioPlayer.src = $currentWaifu.audioPopUrl
-  $: if (normalAudioPlayer.src !== $currentWaifu.audioNormalUrl) normalAudioPlayer.src = $currentWaifu.audioNormalUrl
+  let popAudioSrc = ''
+  let normalAudioSrc = ''
+  $: if (popAudioSrc !== $currentWaifu.audioPopUrl) popAudioSrc = $currentWaifu.audioPopUrl
+  $: if (normalAudioSrc !== $currentWaifu.audioNormalUrl) normalAudioSrc = $currentWaifu.audioNormalUrl
+  $: popAudioPlayer = new Howl({ src: [popAudioSrc], loop: false, autoplay: false, preload: true })
+  $: normalAudioPlayer = new Howl({ src: [normalAudioSrc], loop: false, autoplay: false, preload: true })
   function playPopAudio () {
-    if (popAudioPlayer.readyState !== 4) return
-    popAudioPlayer.currentTime = 0
+    if (popAudioPlayer.state() !== 'loaded') return
     popAudioPlayer.play()
   }
   function playNormalAudio () {
-    if (normalAudioPlayer.readyState !== 4) return
-    normalAudioPlayer.currentTime = 0
+    if (normalAudioPlayer.state() !== 'loaded') return
     normalAudioPlayer.play()
   }
 
