@@ -58,7 +58,7 @@
         <div class="d-flex align-items-center w-100 me-3">
           {#if championWaifuData}
             <div class="me-2">#1</div>
-            <img class="header-img me-2" src="{championWaifuData.imgNormalUrl}" alt="{championWaifuData.name} image" />
+            <img class="header-img me-2" src="{championWaifuData.imgIconUrl}" alt="{championWaifuData.name} image" />
             <div class="flex-fill">{championWaifuData.name}</div>
             <div>{formatNumber(championWaifuData.popCount)}</div>
           {:else}
@@ -76,7 +76,7 @@
                 <div class="list-group-item list-group-item-action d-flex align-items-center waifu-info me-1" on:click={clickWaifu(waifu.waifuId)}>
                   <h3 class="ranking me-2">{waifu.ranking}</h3>
                   <div class="flex-shrink-0 me-2">
-                    <img class="" src="{waifu.imgNormalUrl}" alt="{waifu.name} image" />
+                    <img class="" src="{waifu.imgIconUrl}" alt="{waifu.name} image" />
                   </div>
                   <h5 class="flex-fill">{waifu.name}</h5>
                   <div class="d-flex flex-column me-2">

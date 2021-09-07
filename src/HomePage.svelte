@@ -34,7 +34,7 @@
     {#each waifuList as waifu }
       <Link to="{waifu.url}" class="mx-auto mt-3 text-dark" style="text-decoration: none;">
         <div class="card waifu-card">
-          <img class="card-img-top mx-auto" src="{waifu.imgNormalUrl}" alt="{waifu.name} image" />
+          <img class="card-img-top mx-auto" src="{waifu.imgIconUrl}" alt="{waifu.name} image" />
           <div class="card-body">
             <h5 class="card-title">{waifu.name}</h5>
             <div class="card-text">
