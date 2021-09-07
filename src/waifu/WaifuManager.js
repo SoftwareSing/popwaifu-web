@@ -18,9 +18,7 @@ export const syncServerWaifuEvent = writable(Date.now())
 export const reloadPopEvent = writable(Date.now())
 
 export async function initWaifuManager () {
-  await syncServerWaifuList()
-
-  setInterval(syncServerWaifuList, reloadWaifuTime)
+  await intervalSyncWaifuList()
   setInterval(reloadEveryPopCount, reloadPopCountTime)
 }
 
@@ -29,6 +27,11 @@ function reloadEveryPopCount () {
     waifu.reloadPopCount()
   }
   reloadPopEvent.set(Date.now())
+}
+
+async function intervalSyncWaifuList () {
+  await syncServerWaifuList()
+  setTimeout(intervalSyncWaifuList, reloadWaifuTime)
 }
 
 async function syncServerWaifuList () {

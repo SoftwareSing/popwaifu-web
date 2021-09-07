@@ -52,7 +52,7 @@ export class Waifu {
     this.newPopCount = popCount
     this.pps = (this.newPopCount - this.popCount) / (reloadWaifuTime / 1000)
     this.reloadAddNum = Math.ceil(
-      (this.newPopCount - this.popCount) / ((reloadWaifuTime + 500) / reloadPopCountTime)
+      (this.newPopCount - this.popCount) / ((reloadWaifuTime + 100) / reloadPopCountTime)
     )
 
     this.modeConfigMap = transModeConfigListToMap(modeConfigList)
