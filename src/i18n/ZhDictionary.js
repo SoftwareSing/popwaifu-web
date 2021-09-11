@@ -3,8 +3,8 @@ import { Dictionary } from './Dictionary'
 export class ZhDictionary extends Dictionary {
   static showAllWaifu () { return '老婆列表' }
   static helpUsAddMoreWaifu () { return '幫我們加入更多老婆' }
-  static picture () { return '圖片' }
-  static audio () { return '聲音' }
+  static pictureSource () { return '圖片來源' }
+  static audioSource () { return '聲音來源' }
 
   static copyPreviewLink () { return '複製預覽連結' }
   static onlyUrlCanShareWithLink () { return '*只有 URL 會跟著連結一起分享' }

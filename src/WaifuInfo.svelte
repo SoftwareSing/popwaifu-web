@@ -34,10 +34,10 @@
           </div>
         {/if}
         <hr />
-        <div>{i18n.picture()}: {$currentWaifu.imgInfo}</div>
+        <div>{i18n.pictureSource()}: {$currentWaifu.imgInfo}</div>
         {#if $currentWaifu.audioInfo}
           <hr />
-          <div>{i18n.audio()}: {$currentWaifu.audioInfo}</div>
+          <div>{i18n.audioSource()}: {$currentWaifu.audioInfo}</div>
         {/if}
       </div>
     </div>
