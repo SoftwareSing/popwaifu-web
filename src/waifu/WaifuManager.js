@@ -30,8 +30,11 @@ function reloadEveryPopCount () {
 }
 
 async function intervalSyncWaifuList () {
-  await syncServerWaifuList()
-  setTimeout(intervalSyncWaifuList, reloadWaifuTime)
+  try {
+    await syncServerWaifuList()
+  } finally {
+    setTimeout(intervalSyncWaifuList, reloadWaifuTime)
+  }
 }
 
 async function syncServerWaifuList () {

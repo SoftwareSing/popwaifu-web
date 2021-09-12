@@ -47,7 +47,10 @@ function uploadPop () {
 }
 
 async function intervalUploadPop () {
-  await uploadPop()
-  setTimeout(intervalUploadPop, intervalUploadPopTime)
+  try {
+    await uploadPop()
+  } finally {
+    setTimeout(intervalUploadPop, intervalUploadPopTime)
+  }
 }
 setTimeout(intervalUploadPop, 5000)
