@@ -1,6 +1,7 @@
 export class Dictionary {
   static showAllWaifu ({ number }) { return `show all waifu (${number})` }
   static helpUsAddMoreWaifu () { return 'help us add more waifu' }
+  static helpUsFixBug () { return 'help us fix bug' }
   static pictureSource () { return 'picture source' }
   static audioSource () { return 'audio source' }
 

@@ -3,6 +3,7 @@ import { Dictionary } from './Dictionary'
 export class ZhDictionary extends Dictionary {
   static showAllWaifu ({ number }) { return `老婆列表 (${number})` }
   static helpUsAddMoreWaifu () { return '幫我們加入更多老婆' }
+  static helpUsFixBug () { return '幫我們修點 BUG' }
   static pictureSource () { return '圖片來源' }
   static audioSource () { return '聲音來源' }
 
