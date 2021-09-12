@@ -1,7 +1,7 @@
 import { Dictionary } from './Dictionary'
 
 export class ZhDictionary extends Dictionary {
-  static showAllWaifu () { return '老婆列表' }
+  static showAllWaifu ({ number }) { return `老婆列表 (${number})` }
   static helpUsAddMoreWaifu () { return '幫我們加入更多老婆' }
   static pictureSource () { return '圖片來源' }
   static audioSource () { return '聲音來源' }
