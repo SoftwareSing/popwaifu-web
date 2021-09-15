@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 import { send } from '../utils/HttpSend'
 import { Waifu } from './Waifu'
-import { reloadWaifuTime, reloadPopCountTime } from '../config'
+import { syncWaifuTime, reloadPopCountTime } from '../config'
 /**
  * @typedef {import('./Waifu').WaifuData} WaifuData
  */
@@ -33,7 +33,7 @@ async function intervalSyncWaifuList () {
   try {
     await syncServerWaifuList()
   } finally {
-    setTimeout(intervalSyncWaifuList, reloadWaifuTime)
+    setTimeout(intervalSyncWaifuList, syncWaifuTime)
   }
 }
 

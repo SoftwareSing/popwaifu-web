@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store'
-import { reloadWaifuTime, reloadPopCountTime, defaultModeName } from '../config'
+import { syncWaifuTime, reloadPopCountTime, defaultModeName } from '../config'
 import { randomNumber } from '../utils/randomNumber'
 /**
  * @typedef {Object} ModeConfig
@@ -51,10 +51,10 @@ export class Waifu {
     this.name = name
 
     this.newPopCount = popCount
-    this.pps = (this.newPopCount - this.popCount) / (reloadWaifuTime / 1000)
+    this.pps = (this.newPopCount - this.popCount) / (syncWaifuTime / 1000)
     this.reloadAddNum = Math.ceil(
       (this.newPopCount - this.popCount) /
-      ((reloadWaifuTime + randomNumber({ min: 100, max: 500 })) / reloadPopCountTime)
+      ((syncWaifuTime + randomNumber({ min: 100, max: 500 })) / reloadPopCountTime)
     )
 
     this.modeConfigMap = transModeConfigListToMap(modeConfigList)
