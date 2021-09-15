@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store'
-import { syncWaifuTime, reloadPopCountTime, defaultModeName } from '../config'
+import { syncWaifuPopCountTime, reloadPopCountTime, defaultModeName } from '../config'
 import { randomNumber } from '../utils/randomNumber'
 /**
  * @typedef {Object} ModeConfig
@@ -43,23 +43,27 @@ export class Waifu {
 
   /**
    * @param {Object} waifuData
-   * @param {String} waifuData.name
-   * @param {Number} waifuData.popCount
-   * @param {Array<ModeConfig>} waifuData.modeConfigList
+   * @param {String} [waifuData.name]
+   * @param {Number} [waifuData.popCount]
+   * @param {Array<ModeConfig>} [waifuData.modeConfigList]
    */
   update ({ name, popCount, modeConfigList }) {
-    this.name = name
+    if (name !== undefined) this.name = name
 
-    this.newPopCount = popCount
-    this.pps = (this.newPopCount - this.popCount) / (syncWaifuTime / 1000)
-    this.reloadAddNum = Math.ceil(
-      (this.newPopCount - this.popCount) /
-      ((syncWaifuTime + randomNumber({ min: 100, max: 500 })) / reloadPopCountTime)
-    )
+    if (popCount !== undefined) {
+      this.newPopCount = popCount
+      this.pps = (this.newPopCount - this.popCount) / (syncWaifuPopCountTime / 1000)
+      this.reloadAddNum = Math.ceil(
+        (this.newPopCount - this.popCount) /
+        ((syncWaifuPopCountTime + randomNumber({ min: 100, max: 500 })) / reloadPopCountTime)
+      )
+    }
 
-    this.modeConfigMap = transModeConfigListToMap(modeConfigList)
-    if (!this.modeConfigMap.has(this.modeName)) {
-      this.modeName = defaultModeName
+    if (modeConfigList !== undefined) {
+      this.modeConfigMap = transModeConfigListToMap(modeConfigList)
+      if (!this.modeConfigMap.has(this.modeName)) {
+        this.modeName = defaultModeName
+      }
     }
 
     this.writable.set(this)

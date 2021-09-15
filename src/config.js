@@ -1,4 +1,5 @@
-export const syncWaifuTime = 5 * 1000
+export const syncWaifuTime = 120 * 1000
+export const syncWaifuPopCountTime = 5 * 1000
 export const reloadPopCountTime = 65
 export const defaultModeName = 'default'
 

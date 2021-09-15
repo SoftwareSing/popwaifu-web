@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 import { send } from '../utils/HttpSend'
 import { Waifu } from './Waifu'
-import { syncWaifuTime, reloadPopCountTime } from '../config'
+import { syncWaifuTime, syncWaifuPopCountTime, reloadPopCountTime } from '../config'
 /**
  * @typedef {import('./Waifu').WaifuData} WaifuData
  */
@@ -19,6 +19,7 @@ export const reloadPopEvent = writable(Date.now())
 
 export async function initWaifuManager () {
   await intervalSyncWaifuList()
+  setTimeout(intervalSyncWaifuPopCountList, syncWaifuPopCountTime)
   setInterval(reloadEveryPopCount, reloadPopCountTime)
 }
 
@@ -36,13 +37,30 @@ async function intervalSyncWaifuList () {
     setTimeout(intervalSyncWaifuList, syncWaifuTime)
   }
 }
-
 async function syncServerWaifuList () {
   /**
    * @type {Array<WaifuData>}
    */
   const list = await send('GET', '/api/v1/waifu/list')
   const waifuList = list.map(buildWaifu)
+
+  syncServerWaifuEvent.set(Date.now())
+  return waifuList
+}
+
+async function intervalSyncWaifuPopCountList () {
+  try {
+    await syncServerWaifuPopCountList()
+  } finally {
+    setTimeout(intervalSyncWaifuPopCountList, syncWaifuPopCountTime)
+  }
+}
+async function syncServerWaifuPopCountList () {
+  /**
+   * @type {Array}
+   */
+  const list = await send('GET', '/api/v1/waifu/list/popcount')
+  const waifuList = list.map(({ waifuId, popCount }) => updateWaiufPopCount(waifuId, popCount))
 
   syncServerWaifuEvent.set(Date.now())
   return waifuList
@@ -70,6 +88,16 @@ export function buildWaifu (waifuData) {
 export function updateWaifu (waifuId, waifuData) {
   const waifu = waifuIdMap.get(waifuId)
   waifu.update(waifuData)
+  return waifu
+}
+
+/**
+ * @param {String} waifuId
+ * @param {Number} popCount
+ */
+function updateWaiufPopCount (waifuId, popCount) {
+  const waifu = waifuIdMap.get(waifuId)
+  waifu.update({ popCount })
   return waifu
 }
 
