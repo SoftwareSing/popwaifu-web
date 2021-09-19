@@ -3,6 +3,7 @@
   import HomePage from './HomePage.svelte'
   import WaifuPopPage from './WaifuPopPage.svelte'
   import ExamplePage from './ExamplePage.svelte'
+  import SubmitWaifuNotAvailableModal from './SubmitWaifuNotAvailableModal.svelte'
 
   export let url = ''
   window.__navigator = navigate
@@ -15,6 +16,7 @@
     <Route path="/:urlId" component="{WaifuPopPage}" />
     <Route path="/" component="{HomePage}" />
   </div>
+  <SubmitWaifuNotAvailableModal />
 </Router>
 
 <style>
