@@ -25,9 +25,9 @@
         <div class="visually-hidden" style="display: none;">{$currentWaifu.waifuId}</div>
         <div>{$currentWaifu.name}</div>
         {#if $currentWaifu.modeConfigMap.size > 1}
-          <div class="d-flex mt-3">
+          <div class="d-flex flex-wrap mt-3">
             {#each $currentWaifu.modeUrlList as [modeName, url]}
-              <Link class="btn btn-outline-primary me-3" to="{url}" on:click={clickMode}>
+              <Link class="btn btn-outline-primary me-3 mb-2" to="{url}" on:click={clickMode}>
                 {modeName}
               </Link>
             {/each}
