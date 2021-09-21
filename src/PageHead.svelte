@@ -24,7 +24,7 @@
 
     <link rel="icon" href="{image}" />
   {:else}
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   {/if}
 </svelte:head>
 
