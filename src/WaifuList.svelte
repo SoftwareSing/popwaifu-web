@@ -11,10 +11,13 @@
   $: championWaifuData = waifuDataList[0]
 
   $: showList = filterWaifuShowList(waifuDataList)
-  reloadPopEvent.subscribe(() => { showList = showList })
+  const unsubscribeReloadPopEvent = reloadPopEvent.subscribe(() => { showList = showList })
 
   const intervalId = setInterval(sortWaifuDataList, 1000)
-  onDestroy(() => clearInterval(intervalId))
+  onDestroy(() => {
+    unsubscribeReloadPopEvent()
+    clearInterval(intervalId)
+  })
   function sortWaifuDataList () {
     waifuDataList.sort((a, b) => b.popCount - a.popCount)
     waifuDataList.forEach((waifuData, i) => { waifuData.ranking = i + 1 })
