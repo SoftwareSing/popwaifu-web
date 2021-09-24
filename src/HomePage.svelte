@@ -1,9 +1,12 @@
 <script>
-  import { onDestroy } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
   import { Link } from 'svelte-routing'
   import PageHead from './PageHead.svelte'
   import { getWaifuList, syncServerWaifuEvent } from './waifu/WaifuManager'
   import { formatNumber } from './utils/formatter'
+
+  export let scrollY = 0
+  let lastScrollY = scrollY
 
   let waifuList = []
 
@@ -15,10 +18,15 @@
     waifuList = newList
   })
 
+  onMount(() => {
+    scrollY = lastScrollY
+  })
   onDestroy(() => {
     unsubscribeSyncEvent()
   })
 </script>
+
+<svelte:window bind:scrollY={scrollY} />
 
 <PageHead />
 

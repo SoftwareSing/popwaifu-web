@@ -7,6 +7,7 @@
 
   export let url = ''
   window.__navigator = navigate
+  let homePageScrollY
 </script>
 
 <Router url="{url}">
@@ -14,7 +15,9 @@
     <Route path="/example" component="{ExamplePage}" />
     <Route path="/:urlId/:mode" component="{WaifuPopPage}" />
     <Route path="/:urlId" component="{WaifuPopPage}" />
-    <Route path="/" component="{HomePage}" />
+    <Route path="/">
+      <HomePage bind:scrollY={homePageScrollY} />
+    </Route>
   </div>
   <SubmitWaifuNotAvailableModal />
 </Router>
